@@ -1,5 +1,6 @@
 {
   "name": "magetunisia/marketplace-utils",
+  "version": "1.0.1",
   "description": "Une librairie pour gérer les fichiers JSON en Magento.",
   "type": "library",
   "license": "MIT",

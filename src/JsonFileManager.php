@@ -58,4 +58,39 @@ class JsonFileManager
         return null;
     }
 
+    /**
+     * Convert file json in array.
+     *
+     * @param string $identifiant
+     *   File id.
+     *
+     * @return array
+     *   Data infos.
+     */
+    public function getDataById(string $identifiant): array
+    {
+        try {
+            // Définir le chemin du fichier JSON
+            $filePath = $this->directoryList->getPath('media') . "/marketplace/{$identifiant}.json";
+
+            // Vérifier si le fichier existe
+            if (!file_exists($filePath)) {
+                throw new \Exception("Le fichier JSON n'existe pas : " . $filePath);
+            }
+
+            // Lire le fichier JSON
+            $jsonData  = file_get_contents($filePath);
+            $dataArray = json_decode($jsonData, true);
+
+            // Vérifier si la conversion JSON => Array a réussi
+            if (!is_array($dataArray)) {
+                throw new \Exception("Erreur lors du décodage JSON.");
+            }
+
+            return $dataArray;
+        } catch (\Exception $e) {
+            $this->logger->error("Erreur dans getDataById : " . $e->getMessage());
+            return [];
+        }
+    }
 }
