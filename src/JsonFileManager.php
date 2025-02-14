@@ -35,17 +35,19 @@ class JsonFileManager
 
             // Lire l'ancien contenu si le fichier existe
             if (file_exists($filePath)) {
-                $existingData = file_get_contents($filePath);
-                $jsonArray    = json_decode($existingData, true) ?? [];
+                $existingData    = file_get_contents($filePath);
+                $existingData    = json_decode($existingData, true) ?? [];
             } else {
-                $jsonArray = [];
+                $existingData = [];
             }
 
             // Ajouter la nouvelle donnée
-            $jsonArray[] = json_decode($dataJson, true);
+            $newData = json_decode($dataJson, true);
+
+            $newData = array_merge($existingData, $newData);
 
             // Écrire les données dans le fichier
-            if (file_put_contents($filePath, json_encode($jsonArray, JSON_PRETTY_PRINT)) === false) {
+            if (file_put_contents($filePath, json_encode($newData, JSON_PRETTY_PRINT)) === false) {
                 throw new \Exception('Impossible d’ajouter les données au fichier JSON.');
             }
             $this->logger->debug('Fichier JSON mis à jour avec succès : ' . $filePath);
